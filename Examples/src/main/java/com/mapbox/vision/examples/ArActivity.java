@@ -2,6 +2,7 @@ package com.mapbox.vision.examples;
 
 import android.location.Location;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,6 @@ import com.mapbox.vision.performance.ModelPerformance.On;
 import com.mapbox.vision.performance.ModelPerformanceMode;
 import com.mapbox.vision.performance.ModelPerformanceRate;
 import com.mapbox.vision.utils.VisionLogger;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -57,6 +57,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Example shows how Vision and VisionAR SDKs are used to draw AR lane over the video stream from camera.
@@ -79,8 +80,10 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
 
     // This dummy points will be used to build route. For real world test this needs to be changed to real values for
     // source and target locations.
-    private final Point ROUTE_ORIGIN = Point.fromLngLat(27.654285, 53.928057);
-    private final Point ROUTE_DESTINATION = Point.fromLngLat(27.655637, 53.935712);
+//    private final Point ROUTE_ORIGIN = Point.fromLngLat(139.72622, 35.68446);
+//    private final Point ROUTE_DESTINATION = Point.fromLngLat(139.764332, 35.669547);
+    private final Point ROUTE_ORIGIN = Point.fromLngLat(127.1274756, 37.4109056);
+    private final Point ROUTE_DESTINATION = Point.fromLngLat(80.210064, 13.031197);
 
     @Override
     protected void initViews() {
@@ -102,6 +105,7 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
         super.onStart();
         startVisionManager();
         startNavigation();
+        Timber.e("onStart: 실행됨");
     }
 
     @Override
@@ -109,9 +113,12 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
         super.onStop();
         stopVisionManager();
         stopNavigation();
+        Toast myToast = Toast.makeText(getApplicationContext(),"네비게이션 스탑 ",Toast.LENGTH_SHORT);
+        myToast.show();
     }
 
     private void startVisionManager() {
+        Timber.e("비전매니저 실행됨");
         if (allPermissionsGranted() && !visionManagerWasInit) {
             // Create and start VisionManager.
             VisionManager.create();
@@ -148,10 +155,12 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
 
                 @Override
                 public void onCameraUpdated(@NotNull Camera camera) {
+                    Timber.e("카메라 업데이트");
                 }
 
                 @Override
                 public void onCountryUpdated(@NotNull Country country) {
+                    Timber.e("국가 : %s", country);
                 }
 
                 @Override
@@ -164,8 +173,8 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
             // Create VisionArManager.
             VisionArManager.create(VisionManager.INSTANCE);
             visionArView.setArManager(VisionArManager.INSTANCE);
-            setArRenderOptions(visionArView);
-
+//            setArRenderOptions(visionArView);
+            Timber.e("비전 매니저 초기화.");
             visionManagerWasInit = true;
         }
     }
@@ -203,18 +212,22 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
             locationCallback = new LocationEngineCallback<LocationEngineResult>() {
                 @Override
                 public void onSuccess(LocationEngineResult result) {
-
+                    Toast myToast = Toast.makeText(getApplicationContext(),"콜백 성공 " + result, Toast.LENGTH_SHORT);
+                    myToast.show();
                 }
 
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-
+                    // 객체가 잠깐 떴다가 사라질때마다 이 함수가 실행된다.
+                    Log.e(TAG, "실패콜백");
                 }
             };
 
             try {
                 locationEngine.requestLocationUpdates(arLocationEngineRequest, locationCallback, Looper.getMainLooper());
             } catch (SecurityException se) {
+                Toast myToast = Toast.makeText(getApplicationContext(),"catch 문", Toast.LENGTH_SHORT);
+                myToast.show();
                 VisionLogger.Companion.e(TAG, se.toString());
             }
 
@@ -251,13 +264,14 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
                     @Override
                     public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
                         if (response.body() == null || response.body().routes().isEmpty()) {
+                            Toast myToast = Toast.makeText(getApplicationContext(),"중간 종료", Toast.LENGTH_SHORT);
+                            myToast.show();
                             return;
                         }
 
                         // Start navigation session with retrieved route.
                         DirectionsRoute route = response.body().routes().get(0);
                         mapboxNavigation.startNavigation(route);
-
                         // Set route progress.
                         VisionArManager.setRoute(new Route(
                                 getRoutePoints(route),
@@ -265,10 +279,14 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
                                 "",
                                 ""
                         ));
+                        Toast myToast = Toast.makeText(getApplicationContext(),"direction 설정 성공", Toast.LENGTH_SHORT);
+                        myToast.show();
                     }
 
                     @Override
                     public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                        Toast myToast = Toast.makeText(getApplicationContext(),"direction 설정 실패", Toast.LENGTH_SHORT);
+                        myToast.show();
                     }
                 });
     }

@@ -18,6 +18,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -27,23 +28,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".ExternalVideoSourceActivityKt"
-            android:label="@string/ext_video_example"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ExternalVideoSourceActivity"
-            android:screenOrientation="landscape" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAUYr1GKpVgnLLeAjR_xrg_wTzfmEMuIso" />
 
         <activity
-            android:name=".SafetyActivityKt"
-            android:label="@string/safety_example"
+            android:name=".InitialActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ArActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,68 +46,6 @@
         </activity>
         <activity
             android:name=".SafetyActivity"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".ArActivityKt"
-            android:label="@string/ar_example"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ArActivity"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".CustomDetectionActivityKt"
-            android:label="@string/custom_detections_example"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".CustomDetectionActivity"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".POIActivityKt"
-            android:label="@string/poi_example"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".POIActivity"
-            android:label="@string/poi_example"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".UsbVideoSourceActivityKt"
-            android:label="@string/usb_video_source_example"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity
-            android:name=".UsbVideoSourceActivity"
-            android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ArCustomizationActivityKt"
-            android:label="@string/ar_customization_example"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -123,10 +54,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ArCustomizationActivity"
-            android:screenOrientation="landscape">
-        </activity>
+
     </application>
 
 </manifest>

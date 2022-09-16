@@ -1,37 +1,56 @@
+//buildscript {
+//    if (file("${rootDir}/gradle/versions.gradle").exists()) {
+//        apply from: "${rootDir}/gradle/versions.gradle"
+//    }
+//
+//    repositories {
+//        google()
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath "com.android.tools.build:gradle:$gradle_plugin"
+//        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//    }
+//}
+//
+//allprojects {
+//    repositories {
+//        google()
+//        jcenter()
+//
+//        maven {
+//            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                // Do not change the username below.
+//                // This should always be `mapbox` (not your username).
+//                username = 'mapbox'
+//                // Use the secret token you stored in gradle.properties as the password
+//                password = project.properties['sk.eyJ1Ijoib2xkc3R5bGU0IiwiYSI6ImNsNTgydXI3ZDF4b3IzY3Q3cXJmYmY3NTQifQ.ZYHH9OmrVZRcjYzzD58X6g'] ?: ""
+//            }
+//        }
+//
+//        maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
+//    }
+//}
+
+
 buildscript {
-    if (file("${rootDir}/gradle/versions.gradle").exists()) {
-        apply from: "${rootDir}/gradle/versions.gradle"
-    }
-    
+    ext.kotlin_version = "1.4.32"
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradle_plugin"
+        classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-
-        maven {
-            url 'https://api.mapbox.com/downloads/v2/releases/maven'
-            authentication {
-                basic(BasicAuthentication)
-            }
-            credentials {
-                // Do not change the username below.
-                // This should always be `mapbox` (not your username).
-                username = 'mapbox'
-                // Use the secret token you stored in gradle.properties as the password
-                password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: System.getenv("MAPBOX_DOWNLOADS_TOKEN") ?: ""
-            }
-        }
-
-        maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
-    }
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
