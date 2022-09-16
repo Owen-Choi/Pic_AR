@@ -10,4 +10,8 @@
     <string name="usb_video_source_example">Usb Camera Example</string>
     <string name="vision_not_supported_title">Device is not supported</string>
     <string name="vision_not_supported_message">Vision SDK does not support this device yet, check more details at &lt;a href=\"https://docs.mapbox.com/android/vision/overview/#requirements\">docs.mapbox.com&lt;/a></string>
+    <string name="maps_api_key">AIzaSyAUYr1GKpVgnLLeAjR_xrg_wTzfmEMuIso</string>
+    <string name="default_info_title">기본값</string>
+    <string name="default_info_snippet">기본값 스니펫</string>
+    <string name="pick_place">픽플레이스</string>
 </resources>
