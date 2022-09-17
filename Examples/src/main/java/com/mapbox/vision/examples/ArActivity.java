@@ -82,8 +82,12 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
     // source and target locations.
 //    private final Point ROUTE_ORIGIN = Point.fromLngLat(139.72622, 35.68446);
 //    private final Point ROUTE_DESTINATION = Point.fromLngLat(139.764332, 35.669547);
-    private final Point ROUTE_ORIGIN = Point.fromLngLat(127.1274756, 37.4109056);
-    private final Point ROUTE_DESTINATION = Point.fromLngLat(80.210064, 13.031197);
+
+//    private final Point ROUTE_ORIGIN = Point.fromLngLat(127.1274756, 37.4109056);
+    private Point ROUTE_ORIGIN;
+
+//    private final Point ROUTE_DESTINATION = Point.fromLngLat(80.210064, 13.031197);
+    private Point ROUTE_DESTINATION;
 
     @Override
     protected void initViews() {
@@ -105,7 +109,6 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
         super.onStart();
         startVisionManager();
         startNavigation();
-        Timber.e("onStart: 실행됨");
     }
 
     @Override
@@ -212,8 +215,8 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
             locationCallback = new LocationEngineCallback<LocationEngineResult>() {
                 @Override
                 public void onSuccess(LocationEngineResult result) {
-                    Toast myToast = Toast.makeText(getApplicationContext(),"콜백 성공 " + result, Toast.LENGTH_SHORT);
-                    myToast.show();
+//                    Toast myToast = Toast.makeText(getApplicationContext(),"콜백 성공 " + result, Toast.LENGTH_SHORT);
+//                    myToast.show();
                 }
 
                 @Override
@@ -254,6 +257,17 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
     }
 
     private void initDirectionsRoute() {
+
+        double dest_lat = getIntent().getDoubleExtra("Dest_LAT", 0);
+        double dest_lng = getIntent().getDoubleExtra("Dest_LNG", 0);
+        double origin_lat = getIntent().getDoubleExtra("Origin_LAT", 0);
+        double origin_lng = getIntent().getDoubleExtra("Origin_LNG", 0);
+
+        ROUTE_ORIGIN = Point.fromLngLat(origin_lng, origin_lat);
+        ROUTE_DESTINATION = Point.fromLngLat(dest_lng, dest_lat);
+
+        Log.e(TAG, "initDirectionsRoute: " + dest_lat + " " + dest_lng);
+
         // Get route from predefined points.
         NavigationRoute.builder(this)
                 .accessToken(getString(R.string.mapbox_access_token))
@@ -263,8 +277,11 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
                 .getRoute(new Callback<DirectionsResponse>() {
                     @Override
                     public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+
+                        Log.e(TAG, "onResponse: 경로 초기화");
+
                         if (response.body() == null || response.body().routes().isEmpty()) {
-                            Toast myToast = Toast.makeText(getApplicationContext(),"중간 종료", Toast.LENGTH_SHORT);
+                            Toast myToast = Toast.makeText(getApplicationContext(),"경로값 없음", Toast.LENGTH_SHORT);
                             myToast.show();
                             return;
                         }

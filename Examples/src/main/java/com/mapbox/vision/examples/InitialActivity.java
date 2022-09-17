@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -32,17 +30,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-import java.util.Arrays;
 import java.util.List;
 
 
-public class InitialActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class InitialActivity extends AppCompatActivity implements  OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private static final String TAG = "";
     private GoogleMap map;
@@ -77,6 +70,11 @@ public class InitialActivity extends AppCompatActivity implements OnMapReadyCall
     private LatLng[] likelyPlaceLatLngs;
 
     private Button cng_screen_btn;
+
+    private double Dest_LAT;
+    private double Dest_LNG;
+    private double Origin_LAT;
+    private double Origin_LNG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +119,8 @@ public class InitialActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
+
+        this.map.setOnMapClickListener(this);
 
         this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
@@ -170,6 +170,10 @@ public class InitialActivity extends AppCompatActivity implements OnMapReadyCall
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
+                                Dest_LAT = lastKnownLocation.getLatitude();
+                                Dest_LNG = lastKnownLocation.getLongitude();
+                                Origin_LAT = lastKnownLocation.getLatitude();
+                                Origin_LNG = lastKnownLocation.getLongitude();
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastKnownLocation.getLatitude(),
                                                 lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
@@ -272,7 +276,39 @@ public class InitialActivity extends AppCompatActivity implements OnMapReadyCall
 
     private void StartActivity(Class c) {
         Intent intent = new Intent(this, c);
+        intent.putExtra("Dest_LAT", Dest_LAT);
+        intent.putExtra("Dest_LNG", Dest_LNG);
+        intent.putExtra("Origin_LAT", Origin_LAT);
+        intent.putExtra("Origin_LNG", Origin_LNG);
         startActivity(intent);
     }
+
+//    @Override
+//    public boolean onMarkerClick(final Marker marker) {
+//
+//        // Retrieve the data from the marker.
+//        Integer clickCount = (Integer) marker.getTag();
+//
+//        // Check if a click count was set, then display the click count.
+//        if (clickCount != null) {
+//            clickCount = clickCount + 1;
+//            marker.setTag(clickCount);
+//            Toast.makeText(this,
+//                    marker.getTitle() +
+//                            " has been clicked " + clickCount + " times.",
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//        return false;
+//    }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        map.addMarker(new MarkerOptions()
+                .position(point)
+                .title("Marker"));
+        Dest_LAT = point.latitude;
+        Dest_LNG = point.longitude;
+    }
+
 
 }
