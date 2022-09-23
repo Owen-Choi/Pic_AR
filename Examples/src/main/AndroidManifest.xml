@@ -18,7 +18,6 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -27,12 +26,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<!--        <activity-->
+<!--            android:name=".NaviTester"-->
+<!--            android:exported="true" />-->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAUYr1GKpVgnLLeAjR_xrg_wTzfmEMuIso" />
-        <activity
-            android:name=".InitialActivity">
+
+        <activity android:name=".NaviTester">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,9 +43,7 @@
         </activity>
         <activity
             android:name=".ArActivity"
-            android:screenOrientation="landscape">
-        </activity>
-
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

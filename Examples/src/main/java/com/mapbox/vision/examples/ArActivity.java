@@ -278,8 +278,6 @@ public class ArActivity extends BaseActivity implements RouteListener, ProgressC
                     @Override
                     public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
 
-                        Log.e(TAG, "onResponse: 경로 초기화");
-
                         if (response.body() == null || response.body().routes().isEmpty()) {
                             Toast myToast = Toast.makeText(getApplicationContext(),"경로값 없음", Toast.LENGTH_SHORT);
                             myToast.show();

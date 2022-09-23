@@ -10,6 +10,6 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        VisionManager.init(this, getString(R.string.mapbox_access_token));
+//        VisionManager.init(this, getString(R.string.mapbox_access_token));
     }
 }
